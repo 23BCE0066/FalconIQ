@@ -5,7 +5,6 @@
   <img src="https://img.shields.io/badge/Backend-FastAPI%20%7C%20Python%203.10+-10B981?style=for-the-badge&logo=fastapi&logoColor=white" alt="Backend" />
   <img src="https://img.shields.io/badge/Frontend-Vanilla%20JS%20%7C%20Glassmorphic%20UI-3B82F6?style=for-the-badge&logo=javascript&logoColor=white" alt="Frontend" />
   <img src="https://img.shields.io/badge/Cloud%20Sync-Supabase%20PostgreSQL-EF4444?style=for-the-badge&logo=supabase&logoColor=white" alt="Database" />
-  <img src="https://img.shields.io/badge/Hackathon-Ready%20%20Verified-D97706?style=for-the-badge&logo=github&logoColor=white" alt="Hackathon Status" />
 </div>
 
 ---
