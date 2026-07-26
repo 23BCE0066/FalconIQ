@@ -38,37 +38,43 @@ Our streamlined onboarding and system capability portal, introducing investigato
 
 ---
 
-### 2. 📊 Compliance Dashboard & Live Global Telemetry
+### 2. 📅 Interactive Book a Demo & Presentation Portal
+Our scheduled enterprise demonstration interface where institutions and evaluators interactively book live simulations of our AI agent and financial surveillance pipelines.
+![Book Demo Showcase](screenshots/BOOK_DEMO.png)
+
+---
+
+### 3. 📊 Compliance Dashboard & Live Global Telemetry
 The primary compliance command center displaying real-time transaction volumes, risk category distributions, alerts-over-time trends, KYC verification metrics, and global SWIFT/INR layered telemetry.
 ![Executive Dashboard Showcase](screenshots/DASHBOARD.png)
 
 ---
 
-### 3. 🤖 Ask the AML Agent & Dynamic Execution Timeline
+### 4. 🤖 Ask the AML Agent & Dynamic Execution Timeline
 Our autonomous AI investigation interface. Notice the **Live Execution Timeline** on the right panel, which provides evaluators with transparent, step-by-step verification of how the agent dynamically routes query intents, skips unnecessary computational steps (e.g. macro EDA), and generates explainable regulatory justifications.
 ![Autonomous AML Agent Interface](screenshots/AML_AGENT.png)
 
 ---
 
-### 4. 🚨 Alerts & Cases Escalation Management
+### 5. 🚨 Alerts & Cases Escalation Management
 An enterprise triage workspace where compliance officers filter incoming anomalies by severity (**HIGH**, **MEDIUM**, **CRITICAL**), review triggered FATF typology rules (such as *Structuring / Smurfing* and *Rapid Cash-Out*), and approve or reject statutory case workflows.
 ![Alerts and Cases Cockpit](screenshots/ALERT.png)
 
 ---
 
-### 5. 👥 Customer Master Repository & Risk Profiles
+### 6. 👥 Customer Master Repository & Risk Profiles
 A deep entity exploration workspace providing searching, KYC status filtering, jurisdictional risk badges, declared annual income monitoring, and real-time visualization of frozen or reported accounts.
 ![Customer Master Repository](screenshots/CUSTOMERS.png)
 
 ---
 
-### 6. 🗄️ Datasets Hub & Real-Time Schema Inspection
+### 7. 🗄️ Datasets Hub & Real-Time Schema Inspection
 Demonstrates active connectivity to our multi-table database repository, allowing instant inspection of customer master data, transaction history ledgers, alert records, and global geographical distribution.
 ![Datasets Management View](screenshots/DATASET.png)
 
 ---
 
-### 7. 🕸️ Deep Graph Network Analysis & Typology Topology
+### 8. 🕸️ Deep Graph Network Analysis & Typology Topology
 Advanced graph visualization mapping multi-hop financial flows, isolating circular money laundering loops, structural deposit dispersion across ATMs, and cross-border layering funnels.
 ![Network Graph Analysis](screenshots/NETWORK_ANALYSIS.png)
 
