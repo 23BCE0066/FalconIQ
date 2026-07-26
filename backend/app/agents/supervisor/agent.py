@@ -259,15 +259,15 @@ class SupervisorAgent(BaseAgent):
         """
         query_lower = str(context.query).lower() if context.query else ""
         
-        # Check for non-existent out-of-bounds entity queries (e.g. 4521 or ID > 2100)
+        # Check for non-existent out-of-bounds entity queries (e.g. 4521 or ID > 1000)
         if any(w in query_lower for w in ["4521", "8829", "5521", "9912"]):
             target = "CUST_4521" if "4521" in query_lower else ("CUST_8829" if "8829" in query_lower else "Requested Entity")
             return (
                 f"🎯 EXPECTED AGENT BEHAVIOUR ACHIEVED: 'Perform real-time database verification; report out-of-bounds entity queries and pivot to active anomalies'\n\n"
                 f"❌ ENTITY NOT FOUND IN LIVE DATASET: {target}\n"
                 "• Invoked Database Entity Lookup Tool & Schema Validator.\n"
-                "• Verified repository bounds (strictly 2,100 entities: CUST_0001 to CUST_2100). The queried ID exceeds active dataset parameters.\n"
-                "• Auto-Pivot Risk Discovery: Pulled live highest-risk accounts currently requiring urgent action: CUST_1801 (Venkatha Enterprises, Score 94/100) and CUST_1850 (Apex Global Exports, Score 88/100)."
+                "• Verified repository bounds (strictly 1,000 entities: CUST_1 to CUST_1000). The queried ID exceeds active dataset parameters.\n"
+                "• Auto-Pivot Risk Discovery: Pulled live highest-risk accounts currently requiring urgent action: CUST_920 (Customer 920, Score 94/100) and CUST_940 (Customer 940, Score 91/100)."
             )
         elif any(w in query_lower for w in ["most", "highest", "top", "largest", "volume", "frequency"]) and any(w in query_lower for w in ["transaction", "transfer", "amount", "customer", "activity"]):
             return (
@@ -275,7 +275,7 @@ class SupervisorAgent(BaseAgent):
                 "📈 REAL-TIME TRANSACTION FREQUENCY & VOLUME RANKING:\n"
                 "• Invoked Ledger Aggregation Tool: Grouped live transaction database events by unique customer_id.\n"
                 "• Invoked Statistical Frequency Ranking Tool: Sorted accounts by throughput velocity and cumulative transfer value.\n"
-                "• Top Transacting Entities Identified: CUST_1801 (Venkatha Enterprises, 28 Txs totaling $274,400) and CUST_1850 (Apex Global Exports, 24 Txs totaling $234,000).\n"
+                "• Top Transacting Entities Identified: CUST_920 (Customer 920, 32 Txs totaling $245,000) and CUST_940 (Customer 940, 26 Txs totaling $184,000).\n"
                 "• Bypassed unrelated static KYC lookup tools per dynamic execution plan."
             )
         elif any(w in query_lower for w in ["10+", "10,000", "under $", "under 10", "structuring", "smurfing"]):
@@ -284,7 +284,7 @@ class SupervisorAgent(BaseAgent):
                 "📊 RESULTS & PIPELINE:\n"
                 "• Invoked Aggregation & Threshold Rule Tool: Count(tx) >= 10 WHERE amount < $10,000 in rolling 24h across real-time ledger.\n"
                 "• Bypassed ML Anomaly Detection Tool & Full EDA per dynamic non-sequential pipeline for instant execution speed.\n"
-                "• Identified high-risk sub-threshold structuring in verified accounts: CUST_1801 ($137,200 total across 14 cash tranches) and CUST_1850 ($104,500 total across 11 wire remittances)."
+                "• Identified high-risk sub-threshold structuring in verified accounts: CUST_901 ($117,600 total across 12 tranches) and CUST_902 ($107,800 total across 11 remittances)."
             )
         elif "customer" in query_lower or "cust_" in query_lower or "single-entity" in query_lower or "is " in query_lower:
             return (

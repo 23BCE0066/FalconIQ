@@ -195,9 +195,9 @@ const TransactionsView = {
       const q = document.getElementById('tx-search')?.value.trim();
       let data;
       if (this._isSearch && q && q.length >= 2) {
-        data = await API.get('/transactions/search', { q, page: 1, page_size: 1000, ...filters });
+        data = await API.get('/transactions/search', { q, page: 1, page_size: 200, ...filters });
       } else {
-        data = await API.get('/transactions', { page: 1, page_size: 1000, ...filters });
+        data = await API.get('/transactions', { page: 1, page_size: 200, ...filters });
       }
       let { items } = normalizePage(data);
       if (!items || !items.length) {
