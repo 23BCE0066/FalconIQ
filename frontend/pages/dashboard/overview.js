@@ -804,7 +804,7 @@ const OverviewView = {
       // Always ensure hackathon compliant rich output in docked copilot too
       if (window.AgentView && typeof window.AgentView._generateHackathonExecution === 'function') {
         if (!resp || !resp.summary || !resp.summary.includes('<table') || resp.summary.includes('Investigation completed') || resp.summary.includes('Automated analysis detected') || true) {
-          resp = window.AgentView._generateHackathonExecution(q, resp);
+          resp = await window.AgentView._generateHackathonExecution(q, resp);
         }
       }
 
