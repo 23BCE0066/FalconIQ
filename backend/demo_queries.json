@@ -1,0 +1,37 @@
+[
+  {
+    "query": "Find structuring patterns in the last 30 days.",
+    "expected_intent": "STRUCTURING_DETECTION",
+    "description": "Global sweep to find smurfing typologies across all customers."
+  },
+  {
+    "query": "Show suspicious cross-border transfers.",
+    "expected_intent": "CROSS_BORDER_RISK",
+    "description": "Global sweep for high-risk international transfers."
+  },
+  {
+    "query": "Generate AML report.",
+    "expected_intent": "GENERAL_INVESTIGATION",
+    "description": "Full analysis of the whole dataset with graph network metrics."
+  },
+  {
+    "query": "Show high-risk customers.",
+    "expected_intent": "GENERAL_INVESTIGATION",
+    "description": "Identifies top anomalous and rule-breaking entities in the system."
+  },
+  {
+    "query": "Is customer CUST_452 suspicious?",
+    "expected_intent": "CUSTOMER_LOOKUP",
+    "description": "Deep dive profile into a specific customer's risk score and behaviour."
+  },
+  {
+    "query": "Analyse the transaction activity of CUST_901 over the last 14 days.",
+    "expected_intent": "CUSTOMER_LOOKUP",
+    "description": "Checks a known structuring smurf."
+  },
+  {
+    "query": "Identify any potential layering chains or circular transactions.",
+    "expected_intent": "NETWORK_ANALYSIS",
+    "description": "Triggers the NetworkAnalyzerTool to inspect the graph."
+  }
+]

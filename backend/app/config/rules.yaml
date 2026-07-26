@@ -1,0 +1,80 @@
+# rules.yaml — AML Rule Engine Configuration
+# All thresholds are loaded at runtime. Never hardcode these values in Python.
+
+structuring:
+  enabled: true
+  # Reporting threshold (e.g. FinCEN CTR threshold in USD)
+  threshold: 10000.0
+  # Transactions in this ratio × threshold are flagged as near-miss structuring
+  near_miss_ratio: 0.95
+  # Minimum number of near-miss transactions to trigger the rule
+  min_count: 3
+  # Maximum look-back window for a structuring cluster (days)
+  window_days: 30
+  # Score contribution when this rule fires (0–100)
+  score: 70.0
+  confidence: 0.85
+
+velocity:
+  enabled: true
+  # Alert if customer exceeds this many transactions per day on average
+  max_tx_per_day: 15.0
+  # Alert if total amount in the window exceeds this threshold
+  max_amount_window: 500000.0
+  # Window used for velocity computation (days)
+  window_days: 7
+  score: 60.0
+  confidence: 0.80
+
+rapid_cashout:
+  enabled: true
+  # Fraction of inbound funds that must be cashed out within the window to trigger
+  cashout_ratio: 0.85
+  # Window within which cash-out must occur after receiving funds (hours)
+  window_hours: 48
+  score: 75.0
+  confidence: 0.88
+
+layering:
+  enabled: true
+  # Minimum number of intermediary hops to flag as layering
+  min_hops: 3
+  # Minimum total amount to be worth flagging
+  min_total_amount: 50000.0
+  score: 80.0
+  confidence: 0.78
+
+cross_border:
+  enabled: true
+  # Minimum cross-border ratio to trigger this rule
+  min_ratio: 0.60
+  # Minimum number of high-risk country transactions to trigger
+  min_high_risk_count: 2
+  score: 55.0
+  confidence: 0.75
+
+dormant_account:
+  enabled: true
+  # Minimum days of inactivity to consider an account "dormant"
+  min_dormant_days: 180
+  # Minimum amount of the reactivating transaction
+  min_reactivation_amount: 5000.0
+  score: 65.0
+  confidence: 0.82
+
+circular_transaction:
+  enabled: true
+  # Minimum cycle length to consider it circular
+  min_cycle_length: 3
+  # Maximum cycle length to search for (prevents O(n!) graph search)
+  max_cycle_length: 6
+  score: 85.0
+  confidence: 0.90
+
+risk:
+  weights:
+    kyc: 0.15
+    rule: 0.45
+    ml: 0.25
+    features: 0.10
+    country: 0.05

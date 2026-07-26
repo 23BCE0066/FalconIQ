@@ -1,0 +1,55 @@
+[project]
+name = "falconiq"
+version = "0.1.0"
+description = "Enterprise AI AML Investigation Platform"
+authors = [
+    { name = "Principal Architect", email = "architect@falconiq.ai" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.30.1",
+    "sqlmodel>=0.0.19",
+    "pydantic-settings>=2.3.4",
+    "structlog>=24.2.0",
+    "google-genai>=0.2.2",
+    "pandas>=2.2.2",
+    "scikit-learn>=1.5.0",
+    "pyyaml>=6.0.1",
+    "python-dotenv>=1.0.1",
+    "python-multipart>=0.0.9",
+    "uuid6>=2.0.1",
+    "asgiref>=3.8.1",
+    "networkx>=3.3"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.2",
+    "pytest-asyncio>=0.23.7",
+    "httpx>=0.27.0",
+    "black>=24.4.2",
+    "ruff>=0.4.8",
+    "isort>=5.13.2"
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["app/tests"]
+pythonpath = ["."]

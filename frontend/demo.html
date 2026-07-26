@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>FalconIQ – Live Dashboard Guided Video Tour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/animations.css" />
+  <link rel="stylesheet" href="assets/css/layout.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --bg-page: #f4f5fc;
+      --bg-card: #ffffff;
+      --border: #e5e7f3;
+      --text-main: #0f0e2a;
+      --text-sub: #6b7280;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow: hidden;
+    }
+    .video-tour-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+    }
+    .tour-header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+      z-index: 100;
+    }
+    .tour-stage {
+      flex: 1;
+      position: relative;
+      overflow-y: auto;
+      padding: 30px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-page);
+    }
+    .scene-wrapper {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    .tour-footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 18px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.03);
+      z-index: 100;
+    }
+    .caption-box {
+      background: #f8f9fe;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 22px;
+      color: var(--text-main);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      text-align: center;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .chapters-list {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      flex: 1;
+      padding: 2px 0;
+    }
+    .chapter-btn {
+      background: #f1f3fa;
+      border: 1.5px solid var(--border);
+      color: var(--text-sub);
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .chapter-btn:hover {
+      background: #e2e5f3;
+      color: var(--text-main);
+    }
+    .chapter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    .btn-action {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: #f8f9fe;
+      border-color: var(--primary-light);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border: 1.5px solid var(--primary);
+      color: #ffffff;
+      padding: 9px 22px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(79,70,229,0.3);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bouncePointer {
+      0%, 100% { transform: translateY(0) rotate(-12deg); }
+      50% { transform: translateY(-8px) rotate(-12deg); }
+    }
+    @keyframes pulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.5); }
+      70% { box-shadow: 0 0 0 12px rgba(79, 70, 229, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+    }
+    .pointer-badge {
+      position: absolute;
+      z-index: 10;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 12px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .card-clean {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    }
+  </style>
+</head>
+<body>
+  <div class="video-tour-container">
+    
+    <!-- Top Executive Bar (Clean Light Mode, ZERO dark mode or sweet narration text) -->
+    <header class="tour-header">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 2L4 7v9c0 7.18 5.15 13.9 12 15.45C22.85 29.9 28 23.18 28 16V7L16 2z" fill="url(#brandGrad)" />
+            <path d="M12 16l3 3 5-6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="brandGrad" x1="4" y1="2" x2="28" y2="32"><stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient></defs>
+          </svg>
+          <span style="font-weight: 900; font-size: 22px; color: #0f0e2a; letter-spacing: -0.5px;">Falcon<strong style="color: #4f46e5;">IQ</strong></span>
+        </a>
+        <span style="color: #cbd5e1;">|</span>
+        <span style="font-size: 15px; font-weight: 700; color: var(--text-sub);">Interactive Executive Dashboard Tour</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <button class="btn-action" id="toggle-mute" title="Toggle Audio Narration" style="font-size: 13px;">
+          <span id="mute-icon">🔊</span> <span id="mute-text">Audio: On</span>
+        </button>
+        <a href="index.html#/dashboard" class="btn-primary" style="display: flex; align-items: center; gap: 8px;">
+          <span>⚡ Enter Real Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Presentation Stage -->
+    <main class="tour-stage" id="stage-viewport">
+      <div class="scene-wrapper" id="scene-content">
+        <!-- Dynamically injected light-mode replica scenes -->
+      </div>
+    </main>
+
+    <!-- Footer Controls & Subtitle Feed -->
+    <footer class="tour-footer">
+      <div class="caption-box">
+        <span id="caption-text">Initializing pristine light-mode dashboard tour...</span>
+      </div>
+      
+      <div class="controls-bar">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button class="btn-action" id="btn-prev">⏮ Prev</button>
+          <button class="btn-action" id="btn-pause" style="min-width: 95px; justify-content: center; background: #eef2ff; color: var(--primary); border-color: #c7d2fe;">⏸ Pause</button>
+          <button class="btn-action" id="btn-next">Next ⏭</button>
+        </div>
+
+        <div class="chapters-list" id="chapters-container">
+          <!-- Chapter navigation tabs -->
+        </div>
+
+        <div>
+          <a href="index.html#/dashboard" class="btn-action" style="color: var(--primary); font-weight: 800; border-color: var(--primary-light);">
+            Exit Tour ➔
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Executive Presentation Scenes (100% Light Mode, Pristine Photorealistic Dashboard Replicas)
+    const tourScenes = [
+      {
+        id: 1,
+        title: "1. Launching Platform",
+        duration: 13000,
+        script: "Welcome to FalconIQ, India's leading autonomous AI anti-money laundering platform. Today, we are exploring our live compliance dashboard. Getting started is effortless—simply click the Launch FalconIQ Platform button on our home screen to step immediately into your command center.",
+        html: `
+          <div style="padding: 20px 0; display: flex; flex-direction: column; align-items: center;">
+            <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 20px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08); width: 100%; max-width: 960px; overflow: hidden; position: relative;">
+              <!-- Browser Bar Replica -->
+              <div style="background: #f1f5f9; padding: 12px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px;">
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></div>
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></div>
+                <div style="width: 12px; height: 12px; border-radius: 50%; background: #10b981;"></div>
+                <span style="font-size: 12.5px; font-family: monospace; color: #64748b; margin-left: 14px;">🔒 https://falconiq.ai/home</span>
+              </div>
+
+              <!-- Hero Content in Clean Light Mode -->
+              <div style="padding: 60px 40px; text-align: center; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); position: relative;">
+                <span style="background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-bottom: 22px;">
+                  ⚡ India's State-of-the-Art Autonomous AI AML Engine
+                </span>
+                <h1 style="font-size: 40px; font-weight: 900; color: #0f172a; margin: 0 0 16px 0; letter-spacing: -1px;">
+                  Autonomous AI Anti-Money Laundering Platform
+                </h1>
+                <p style="font-size: 17px; color: #475569; max-width: 660px; margin: 0 auto 40px auto; line-height: 1.6;">
+                  Detect suspicious activity, explain financial risks instantly, and help compliance officers generate official audit-ready SAR reports with confidence.
+                </p>
+
+                <!-- Interactive Launch Button Replica with Pointer -->
+                <div style="display: flex; justify-content: center; position: relative; margin-bottom: 20px;">
+                  <div style="background: linear-gradient(135deg, #4f46e5, #6366f1); color: #ffffff; padding: 18px 42px; border-radius: 14px; font-size: 18px; font-weight: 800; box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4); border: 2px solid #a5b4fc; animation: pulseRing 2s infinite;">
+                    <span>⚡ Launch FalconIQ Platform ➔</span>
+                  </div>
+
+                  <!-- Animated Cursor Pointer -->
+                  <div style="position: absolute; right: 170px; bottom: -28px; display: flex; flex-direction: column; align-items: center; z-index: 20;">
+                    <span style="font-size: 40px; animation: bouncePointer 1.2s infinite; display: inline-block;">👆</span>
+                    <span style="background: #0f172a; color: #ffffff; font-size: 12px; font-weight: 800; padding: 5px 12px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); margin-top: -6px; border: 2px solid #38bdf8;">
+                      Click to open live Compliance Dashboard!
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 20px; color: #4f46e5; font-weight: 700; font-size: 14px;">
+              ✨ STEP 1: Logging into the centralized compliance command center...
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 2,
+        title: "2. Dashboard & Date Selector",
+        duration: 17000,
+        script: "Upon entering the platform, your dashboard presents an executive summary of your AML monitoring operations. At the top right, check out our interactive audit date range selector. You can easily switch between weekly dates—such as May fifteenth to May twenty-second—monthly views, or select custom dates, and instantly generate official RBI compliant export reports.",
+        html: `
+          <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+            <!-- Real Light Mode Dashboard Header -->
+            <div class="card-clean" style="display: flex; align-items: center; justify-content: space-between; background: #ffffff;">
+              <div>
+                <div style="font-size: 22px; font-weight: 900; color: #0f172a;">Welcome back, Compliance Officer 👋</div>
+                <div style="font-size: 14px; color: #64748b; margin-top: 4px;">Here's what's happening with your AML monitoring system</div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 16px; position: relative;">
+                <!-- Highlighted Audit Date Range Selector Box -->
+                <div style="position: relative;">
+                  <div style="background: #ffffff; border: 2.5px solid #4f46e5; border-radius: 12px; padding: 10px 18px; font-size: 13.5px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.15);">
+                    <span>📅 May 15 - May 22, 2026 (Last 7 Days) ▾</span>
+                  </div>
+                  <div style="position: absolute; top: -28px; left: 10px; background: #4f46e5; color: #ffffff; font-size: 10.5px; font-weight: 900; padding: 3px 10px; border-radius: 6px; text-transform: uppercase;">
+                    ✨ Select Customizable Dates Here!
+                  </div>
+                </div>
+
+                <div style="background: #0f172a; color: #ffffff; padding: 11px 20px; border-radius: 12px; font-size: 13.5px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                  <span>📥 Export Report</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Exact Replica of 5 KPI Cards in Light Mode -->
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;">
+              <div class="card-clean" style="border-top: 4px solid #3b82f6;">
+                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">TOTAL CUSTOMERS</div>
+                <div style="font-size: 28px; font-weight: 900; color: #0f172a; margin: 8px 0;">2,100</div>
+                <div style="font-size: 12px; font-weight: 700; color: #10b981;">● Active Sample Dataset</div>
+              </div>
+
+              <div class="card-clean" style="border-top: 4px solid #ef4444;">
+                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">ACTIVE ALERTS</div>
+                <div style="font-size: 28px; font-weight: 900; color: #ef4444; margin: 8px 0;">1,247</div>
+                <span style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 2px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 800;">▲ +18.3% Surge</span>
+              </div>
+
+              <div class="card-clean" style="border-top: 4px solid #f59e0b;">
+                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">HIGH RISK ENTITIES</div>
+                <div style="font-size: 28px; font-weight: 900; color: #d97706; margin: 8px 0;">315</div>
+                <div style="font-size: 12px; color: #64748b;">Requiring immediate review</div>
+              </div>
+
+              <div class="card-clean" style="border-top: 4px solid #10b981;">
+                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">AI RISK SCORE AVG</div>
+                <div style="font-size: 28px; font-weight: 900; color: #10b981; margin: 8px 0;">14.2</div>
+                <div style="font-size: 12px; font-weight: 700; color: #10b981;">✔ Normal Baseline</div>
+              </div>
+
+              <div class="card-clean" style="border-top: 4px solid #8b5cf6;">
+                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase;">SAR AUTO-FILING RATE</div>
+                <div style="font-size: 28px; font-weight: 900; color: #7c3aed; margin: 8px 0;">100%</div>
+                <div style="font-size: 12px; font-weight: 700; color: #7c3aed;">✔ RBI FIU Verified</div>
+              </div>
+            </div>
+
+            <div style="background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 14px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;">
+              <span style="color: #3730a3; font-size: 14px;"><strong>💡 Interactive Feature:</strong> Switching date ranges instantly re-screens transactions and updates charts without reloading!</span>
+              <span style="background: #ffffff; color: #4f46e5; border: 1px solid #a5b4fc; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 800;">REAL-TIME SYNC</span>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 3,
+        title: "3. Analytics & Alert Tables",
+        duration: 17000,
+        script: "As we explore the dashboard, FalconIQ displays real-time charts for Risk Level Distribution, alert trends over time, and leading suspicious patterns like Smurfing and Layering. Beneath the charts, our Top Five High Risk Alerts table continuously screens accounts in milliseconds, showing precise anomaly scores and patterns for immediate diagnosis.",
+        html: `
+          <div style="width: 100%; display: flex; flex-direction: column; gap: 18px;">
+            <!-- Row of 3 Real Light-Mode Charts -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+              <div class="card-clean">
+                <div style="font-weight: 800; font-size: 14px; color: #0f172a; margin-bottom: 14px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">📊 Risk Level Distribution</div>
+                <div style="display: flex; align-items: center; justify-content: space-around; padding: 6px 0;">
+                  <div style="width: 78px; height: 78px; border-radius: 50%; border: 10px solid #ef4444; border-right-color: #f59e0b; border-bottom-color: #10b981; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #0f172a; font-size: 15px;">2.1k</div>
+                  <div style="font-size: 12px; color: #475569; line-height: 1.8;">
+                    <div>🔴 <strong>315</strong> High Risk</div>
+                    <div>🟠 <strong>562</strong> Med Risk</div>
+                    <div>🟢 <strong>1,223</strong> Low Risk</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-clean">
+                <div style="font-weight: 800; font-size: 14px; color: #0f172a; margin-bottom: 14px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">📈 Alerts Over Time</div>
+                <div style="height: 74px; display: flex; align-items: flex-end; justify-content: space-around; padding: 0 10px;">
+                  <div style="width: 16px; height: 35%; background: #cbd5e1; border-radius: 4px 4px 0 0;"></div>
+                  <div style="width: 16px; height: 55%; background: #94a3b8; border-radius: 4px 4px 0 0;"></div>
+                  <div style="width: 16px; height: 45%; background: #64748b; border-radius: 4px 4px 0 0;"></div>
+                  <div style="width: 16px; height: 90%; background: #ef4444; border-radius: 4px 4px 0 0; box-shadow: 0 4px 10px rgba(239,68,68,0.3);"></div>
+                  <div style="width: 16px; height: 60%; background: #f87171; border-radius: 4px 4px 0 0;"></div>
+                </div>
+                <div style="text-align: center; color: #64748b; font-size: 11.5px; margin-top: 8px;">May 15 ─── <strong style="color: #ef4444;">May 22 (Surge)</strong> ─── Today</div>
+              </div>
+
+              <div class="card-clean">
+                <div style="font-weight: 800; font-size: 14px; color: #0f172a; margin-bottom: 14px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">🔥 Top Suspicious Patterns</div>
+                <div style="font-size: 12px; color: #334155; display: flex; flex-direction: column; gap: 12px;">
+                  <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span>Smurfing (Multi-Account)</span><strong style="color: #ef4444;">44%</strong></div>
+                    <div style="height: 8px; background: #e2e8f0; border-radius: 6px; overflow: hidden;"><div style="width: 44%; height: 100%; background: #ef4444;"></div></div>
+                  </div>
+                  <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><span>Rapid Pass-Through</span><strong style="color: #f59e0b;">31%</strong></div>
+                    <div style="height: 8px; background: #e2e8f0; border-radius: 6px; overflow: hidden;"><div style="width: 31%; height: 100%; background: #f59e0b;"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Real High Risk Alerts Table in Light Mode -->
+            <div class="card-clean" style="padding: 0; overflow: hidden;">
+              <div style="padding: 16px 20px; background: #f8fafc; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 900; font-size: 15px; color: #0f172a;">🚨 Top 5 High Risk Alerts (Live AI Screening)</span>
+                <span style="color: var(--primary); font-size: 13px; font-weight: 800; text-decoration: underline; cursor: pointer;">View All 1,247 Alerts ➔</span>
+              </div>
+              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13.5px;">
+                <thead>
+                  <tr style="background: #f1f5f9; color: #64748b; font-size: 11.5px; font-weight: 700; text-transform: uppercase;">
+                    <th style="padding: 10px 20px;">Alert ID</th>
+                    <th>Customer / Account Name</th>
+                    <th>Risk Level</th>
+                    <th>Anomaly Score</th>
+                    <th>Suspicious Pattern</th>
+                    <th style="padding: 10px 20px;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom: 1px solid var(--border); background: #fffcfc;">
+                    <td style="padding: 12px 20px; font-family: monospace; font-weight: 800; color: var(--primary);">ALT-9041</td>
+                    <td style="font-weight: 800; color: #0f172a;">TechCorp Global Logistics</td>
+                    <td><span style="background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 800;">HIGH</span></td>
+                    <td style="font-weight: 900; color: #ef4444;">96.4 / 100</td>
+                    <td style="color: #475569;">Layering across 6 offshore shell entities</td>
+                    <td style="padding: 12px 20px;"><button style="background: #4f46e5; color: #ffffff; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 700; cursor: pointer;">View Graph</button></td>
+                  </tr>
+                  <tr style="background: #fffcf0;">
+                    <td style="padding: 12px 20px; font-family: monospace; font-weight: 800; color: var(--primary);">ALT-8822</td>
+                    <td style="font-weight: 800; color: #0f172a;">Silk Road Exporters Trust</td>
+                    <td><span style="background: #fffbeb; color: #d97706; border: 1px solid #fde68a; padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 800;">MEDIUM</span></td>
+                    <td style="font-weight: 900; color: #d97706;">82.1 / 100</td>
+                    <td style="color: #475569;">Rapid structuring below reporting thresholds</td>
+                    <td style="padding: 12px 20px;"><button style="background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1; padding: 6px 14px; border-radius: 8px; font-weight: 700; cursor: pointer;">Review</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 4,
+        title: "4. Custom Datasets & Delete",
+        duration: 18000,
+        script: "In our Datasets tab, uploading and managing custom databases is seamless. You can easily upload bank transaction sample CSVs containing over two thousand one hundred customers, and FalconIQ updates all analytics instantly in real time. We also added a quick Delete button right next to your uploaded files, allowing you to remove any custom dataset with a single click.",
+        html: `
+          <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+            <!-- Real Light-Mode Datasets Header -->
+            <div class="card-clean" style="display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-size: 24px; font-weight: 900; color: #0f172a;">Datasets Management</div>
+                <div style="font-size: 14px; color: #64748b; margin-top: 4px;">Manage and explore transaction sample files powering the AML neural engine.</div>
+              </div>
+              <div style="background: #3b82f6; color: #ffffff; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(59,130,246,0.3);">
+                <span>📤 Upload Dataset (.CSV / .XLSX)</span>
+              </div>
+            </div>
+
+            <!-- Available Datasets Section with Live Delete Button Replica -->
+            <div class="card-clean" style="padding: 24px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;">
+                <span style="font-size: 16px; font-weight: 800; color: #0f172a;">📂 Available Datasets & Typology Files</span>
+                <span style="background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 800;">🟢 Real-Time AI Sync Active</span>
+              </div>
+
+              <!-- Uploaded Sample Dataset Row -->
+              <div style="background: #f8fafc; border: 2px solid #4f46e5; border-radius: 16px; padding: 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 25px rgba(79, 70, 229, 0.08);">
+                <div style="display: flex; align-items: center; gap: 18px;">
+                  <div style="width: 50px; height: 50px; border-radius: 12px; background: #eef2ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 26px;">📁</div>
+                  <div>
+                    <div style="font-size: 17px; font-weight: 900; color: #0f172a;">bank_transactions_sample_2100.csv</div>
+                    <div style="font-size: 13.5px; font-weight: 700; color: #10b981; margin-top: 4px;">✔ 2,100 Customers · 245,882 Transactions Screened & Updated</div>
+                    <div style="font-size: 12px; color: #64748b; margin-top: 2px;">Format: Standard CSV / Excel · Friendly Upload Validated</div>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 16px; position: relative;">
+                  <span style="background: #ffffff; color: #0f172a; border: 1px solid #cbd5e1; padding: 8px 14px; border-radius: 10px; font-size: 12.5px; font-weight: 700;">Status: Verified Safe</span>
+                  
+                  <!-- Highlighted Delete Button with Pointer -->
+                  <div style="position: relative;">
+                    <button style="background: #ef4444; color: #ffffff; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 13.5px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); animation: pulseRing 2s infinite;">
+                      <span>🗑️ Delete / Remove</span>
+                    </button>
+
+                    <div style="position: absolute; right: -20px; top: -38px; z-index: 20; display: flex; align-items: center;">
+                      <span style="background: #0f172a; color: #ffffff; font-size: 11.5px; font-weight: 900; padding: 4px 10px; border-radius: 8px; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.25); border: 1.5px solid #f87171;">
+                        👈 Remove custom datasets with 1-click!
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top: 16px; text-align: center; color: #64748b; font-size: 13px; font-weight: 600;">
+                💡 Removing or uploading datasets immediately updates customer transaction tables without page refreshes!
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 5,
+        title: "5. AI Assistant & Razorpay Pay",
+        duration: 17000,
+        script: "Whenever you require investigative intelligence, simply open Ask the Agent. Our autonomous AI Assistant continuously monitors your two thousand one hundred accounts and answers compliance questions in plain English. Moreover, our SaaS pricing plans come integrated with live Razorpay payment gateways, enabling instant upgrades with just one click.",
+        html: `
+          <div style="width: 100%; display: flex; align-items: stretch; justify-content: space-between; gap: 24px;">
+            <!-- Left: Real Ask the Agent UI in Light Mode -->
+            <div class="card-clean" style="flex: 1.2; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 16px;">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 42px; height: 42px; border-radius: 12px; background: #eef2ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 22px;">🤖</div>
+                    <div>
+                      <div style="font-weight: 900; font-size: 16px; color: #0f172a;">Ask the Agent – Autonomous AI</div>
+                      <div style="font-size: 12px; font-weight: 700; color: #10b981;">● Online & Monitoring 2,100 Customers</div>
+                    </div>
+                  </div>
+                  <span style="background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 800;">PLAIN ENGLISH SQL/AI</span>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 14px;">
+                  <div style="font-size: 11.5px; font-weight: 700; color: #64748b; margin-bottom: 4px;">👤 COMPLIANCE OFFICER INQUIRY:</div>
+                  <div style="font-size: 14px; font-weight: 700; color: #0f172a;">"Examine the uploaded dataset and summarize high-priority layering anomalies."</div>
+                </div>
+              </div>
+
+              <div style="background: #ecfdf5; border-left: 4px solid #10b981; border-radius: 0 12px 12px 0; padding: 16px;">
+                <div style="font-size: 12px; font-weight: 800; color: #059669; margin-bottom: 6px;">🤖 FALCONIQ AI RESPONSE:</div>
+                <div style="font-size: 14px; color: #065f46; line-height: 1.6;">
+                  "I analyzed 2,100 customer profiles in real-time. I isolated <strong>6 structured layering networks</strong> routing funds across offshore shell accounts. Official RBI SAR audit evidence has been formatted and is ready for download."
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Real Pricing Card with Razorpay Checkout Replica -->
+            <div class="card-clean" style="flex: 0.9; border: 2.5px solid #6366f1; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); text-align: center; display: flex; flex-direction: column; justify-content: center; position: relative;">
+              <span style="background: #eef2ff; color: #4f46e5; font-size: 11px; font-weight: 900; padding: 5px 14px; border-radius: 12px; display: inline-block; margin: 0 auto 16px auto; border: 1px solid #c7d2fe;">RAZORPAY LIVE INTEGRATION</span>
+              <h3 style="font-size: 24px; font-weight: 900; color: #0f172a; margin: 0 0 8px 0;">Compliance Pro Plan</h3>
+              <div style="font-size: 38px; font-weight: 900; color: var(--primary); margin-bottom: 12px;">₹3,500 <span style="font-size: 14px; color: #64748b; font-weight: 600;">/ month</span></div>
+              <p style="font-size: 13px; color: #475569; margin: 0 0 24px 0; line-height: 1.5;">
+                Includes 100,000 AI Transactions, Custom CSV Uploads, & Real-Time Sync.
+              </p>
+
+              <!-- Interactive Pay Button with Cursor -->
+              <div style="display: flex; justify-content: center; position: relative;">
+                <div style="width: 100%; background: linear-gradient(135deg, #4f46e5, #6366f1); color: #ffffff; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 900; box-shadow: 0 8px 24px rgba(79,70,229,0.35); border: 2px solid #a5b4fc; cursor: pointer;">
+                  ⚡ Pay & Activate Pro Now
+                </div>
+
+                <div style="position: absolute; right: 20px; bottom: -24px; display: flex; flex-direction: column; align-items: center; z-index: 20;">
+                  <span style="font-size: 36px; animation: bouncePointer 1.2s infinite;">👆</span>
+                  <span style="background: #0f172a; color: #ffffff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">Opens Live Razorpay!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: 6,
+        title: "6. Enter Live Dashboard",
+        duration: 13000,
+        script: "Thank you once again for joining our guided video tour of FalconIQ! Experience the speed, precision, and complete peace of mind of autonomous AI financial security. Go right ahead, click the Enter Real Dashboard button now, and test drive FalconIQ today!",
+        html: `
+          <div style="padding: 40px; text-align: center; max-width: 780px; margin: 0 auto;">
+            <div style="width: 80px; height: 80px; border-radius: 24px; background: #eef2ff; color: var(--primary); display: inline-flex; align-items: center; justify-content: center; font-size: 42px; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(79,70,229,0.15); border: 1.5px solid #c7d2fe;">
+              🛡️
+            </div>
+            <h1 style="font-size: 38px; font-weight: 900; color: #0f172a; margin: 0 0 16px 0; letter-spacing: -1px;">
+              Your Live <span style="color: #4f46e5;">FalconIQ Command Center</span> is Ready
+            </h1>
+            <p style="font-size: 17px; color: #475569; line-height: 1.6; margin: 0 0 36px 0;">
+              Step directly inside your active compliance dashboard now. Upload custom bank datasets, explore interactive date filters, and run instant AI investigations in real time.
+            </p>
+
+            <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+              <a href="index.html#/dashboard" style="background: linear-gradient(135deg, #4f46e5, #6366f1); color: #ffffff; padding: 18px 42px; border-radius: 14px; font-size: 18px; font-weight: 900; text-decoration: none; box-shadow: 0 12px 30px rgba(79,70,229,0.4); border: 2px solid #a5b4fc; display: inline-flex; align-items: center; gap: 10px; transition: transform 0.2s;">
+                <span>🚀 Enter Real Live Dashboard Now ➔</span>
+              </a>
+            </div>
+
+            <div style="margin-top: 40px; display: flex; justify-content: center; gap: 24px;">
+              <button onclick="restartTour()" class="btn-action" style="font-size: 14px; padding: 10px 20px; border-color: var(--border); color: #64748b;">
+                🔁 Replay Presentation from Start
+              </button>
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    let currentIndex = 0;
+    let isPaused = false;
+    let sceneTimer = null;
+    let isAudioEnabled = true;
+    let synth = window.speechSynthesis;
+
+    const viewport = document.getElementById('stage-viewport');
+    const sceneContent = document.getElementById('scene-content');
+    const captionText = document.getElementById('caption-text');
+    const chaptersContainer = document.getElementById('chapters-container');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const btnPause = document.getElementById('btn-pause');
+    const btnMute = document.getElementById('toggle-mute');
+    const muteText = document.getElementById('mute-text');
+    const muteIcon = document.getElementById('mute-icon');
+
+    // Render Chapters Buttons
+    function renderChapters() {
+      chaptersContainer.innerHTML = tourScenes.map((s, idx) => `
+        <button class="chapter-btn ${idx === currentIndex ? 'active' : ''}" onclick="goToScene(${idx})">
+          ${s.title}
+        </button>
+      `).join('');
+    }
+
+    // Speak narration with smooth executive tone
+    function speakScript(text) {
+      if (synth) {
+        synth.cancel();
+      }
+      if (!isAudioEnabled || !synth) return;
+
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 1.02;
+      u.pitch = 1.0;
+      u.lang = 'en-US';
+
+      // Seek high quality voices
+      const voices = synth.getVoices();
+      if (voices.length > 0) {
+        const best = voices.find(v => (v.name.includes('Samantha') || v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Daniel') || v.name.includes('Alex')) && v.lang.startsWith('en')) || voices[0];
+        if (best) u.voice = best;
+      }
+
+      synth.speak(u);
+    }
+
+    // Load Scene
+    function loadScene(idx) {
+      if (idx < 0) idx = 0;
+      if (idx >= tourScenes.length) idx = tourScenes.length - 1;
+      currentIndex = idx;
+
+      clearTimeout(sceneTimer);
+      if (synth) synth.cancel();
+
+      const scene = tourScenes[currentIndex];
+      
+      // Animate transition
+      sceneContent.style.opacity = '0';
+      sceneContent.style.transform = 'translateY(10px)';
+      
+      setTimeout(() => {
+        sceneContent.innerHTML = scene.html;
+        captionText.textContent = `"${scene.script}"`;
+        sceneContent.style.opacity = '1';
+        sceneContent.style.transform = 'translateY(0)';
+        
+        renderChapters();
+
+        if (!isPaused) {
+          speakScript(scene.script);
+          sceneTimer = setTimeout(() => {
+            if (currentIndex < tourScenes.length - 1) {
+              loadScene(currentIndex + 1);
+            }
+          }, scene.duration);
+        }
+      }, 150);
+    }
+
+    window.goToScene = function(idx) {
+      isPaused = false;
+      btnPause.innerHTML = '⏸ Pause';
+      loadScene(idx);
+    };
+
+    window.restartTour = function() {
+      isPaused = false;
+      btnPause.innerHTML = '⏸ Pause';
+      loadScene(0);
+    };
+
+    btnPrev.addEventListener('click', () => {
+      if (currentIndex > 0) loadScene(currentIndex - 1);
+    });
+
+    btnNext.addEventListener('click', () => {
+      if (currentIndex < tourScenes.length - 1) loadScene(currentIndex + 1);
+    });
+
+    btnPause.addEventListener('click', () => {
+      isPaused = !isPaused;
+      if (isPaused) {
+        clearTimeout(sceneTimer);
+        if (synth) synth.cancel();
+        btnPause.innerHTML = '▶ Resume';
+      } else {
+        btnPause.innerHTML = '⏸ Pause';
+        loadScene(currentIndex);
+      }
+    });
+
+    btnMute.addEventListener('click', () => {
+      isAudioEnabled = !isAudioEnabled;
+      if (isAudioEnabled) {
+        muteIcon.textContent = '🔊';
+        muteText.textContent = 'Audio: On';
+        speakScript(tourScenes[currentIndex].script);
+      } else {
+        muteIcon.textContent = '🔇';
+        muteText.textContent = 'Audio: Muted';
+        if (synth) synth.cancel();
+      }
+    });
+
+    // Initialize Voice Synthesis & First Scene
+    window.addEventListener('load', () => {
+      if (synth) {
+        synth.onvoiceschanged = () => { /* voices loaded */ };
+      }
+      loadScene(0);
+    });
+  </script>
+</body>
+</html>

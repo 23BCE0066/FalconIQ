@@ -1,0 +1,114 @@
+/* =======================================================
+   FalconIQ — CSS Variables
+   ======================================================= */
+:root {
+  /* Brand */
+  --primary: #4f46e5;
+  --primary-light: #818cf8;
+  --primary-dark: #3730a3;
+  --primary-glow: rgba(79, 70, 229, 0.35);
+  --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+
+  /* Sidebar */
+  --sidebar-bg: #0c0b22;
+  --sidebar-hover: rgba(255,255,255,0.06);
+  --sidebar-active: rgba(99,102,241,0.18);
+  --sidebar-active-border: #6366f1;
+  --sidebar-text: rgba(255,255,255,0.65);
+  --sidebar-text-active: #ffffff;
+  --sidebar-width: 240px;
+
+  /* Main & Backgrounds */
+  --bg: #ffffff;
+  --bg-secondary: #f8f9fe;
+  --bg-card: #ffffff;
+  --main-bg: #f4f5fc;
+  --topbar-bg: #ffffff;
+  --card-bg: #ffffff;
+
+  /* Borders */
+  --border: #e5e7f3;
+  --border-light: rgba(229, 231, 243, 0.6);
+
+  /* Risk Levels */
+  --risk-high: #ef4444;
+  --risk-high-bg: #fef2f2;
+  --risk-high-border: rgba(239,68,68,0.2);
+  --risk-medium: #f59e0b;
+  --risk-medium-bg: #fffbeb;
+  --risk-medium-border: rgba(245,158,11,0.2);
+  --risk-low: #10b981;
+  --risk-low-bg: #ecfdf5;
+  --risk-low-border: rgba(16,185,129,0.2);
+  --risk-critical: #7c3aed;
+  --risk-critical-bg: #f5f3ff;
+
+  /* Typography Colors */
+  --text-primary: #0f0e2a;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #f0f0ff 0%, #fafafe 50%, #f5f3ff 100%);
+  --gradient-text: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --gradient-btn: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(15, 14, 42, 0.08);
+  --shadow-md: 0 4px 16px rgba(15, 14, 42, 0.08);
+  --shadow-lg: 0 12px 40px rgba(79, 70, 229, 0.15);
+  --shadow-card: 0 2px 12px rgba(15, 14, 42, 0.06);
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+
+  /* Layout */
+  --nav-height: 68px;
+  --topbar-h: 60px;
+  
+  /* Transitions */
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =======================================================
+   FalconIQ — Dark Theme Palette (Sleek & Professional)
+   ======================================================= */
+[data-theme="dark"], body.dark-theme, body.dark-mode {
+  /* Main & Backgrounds */
+  --bg: #0d0f18;
+  --bg-secondary: #141724;
+  --bg-card: #1c2032;
+  --main-bg: #090a12;
+  --topbar-bg: #111422;
+  --card-bg: #181b2b;
+
+  /* Borders */
+  --border: #282d43;
+  --border-light: rgba(40, 45, 67, 0.6);
+
+  /* Risk Levels — adapted tint backgrounds for dark mode */
+  --risk-high-bg: rgba(239, 68, 68, 0.16);
+  --risk-medium-bg: rgba(245, 158, 11, 0.16);
+  --risk-low-bg: rgba(16, 185, 129, 0.16);
+  --risk-critical-bg: rgba(124, 58, 237, 0.16);
+
+  /* Typography Colors */
+  --text-primary: #f8f9fe;
+  --text-secondary: #a1a9be;
+  --text-muted: #6b7280;
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #101220 0%, #151829 50%, #1a1c35 100%);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.55);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.38);
+}
