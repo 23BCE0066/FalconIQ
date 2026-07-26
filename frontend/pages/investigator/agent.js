@@ -710,6 +710,17 @@ window.AMLEscalation = {
         btnEl.style.background = '#15803d';
         btnEl.style.boxShadow = '0 2px 6px rgba(21,128,61,0.4)';
       }
+      try {
+        const frozen = JSON.parse(localStorage.getItem('falconiq_frozen_accounts') || '{}');
+        const cleanId = str => str ? str.toString().trim() : '';
+        const cid = cleanId(custId);
+        frozen[cid] = { timestamp: new Date().toISOString(), reason: reason, by: 'AI Compliance Agent (STR)' };
+        if (!cid.startsWith('CUST_')) frozen['CUST_' + cid] = frozen[cid];
+        else frozen[cid.replace('CUST_', '')] = frozen[cid];
+        localStorage.setItem('falconiq_frozen_accounts', JSON.stringify(frozen));
+      } catch (err) {
+        console.warn('Could not save freeze status to localStorage:', err);
+      }
       const strCode = 'FINCEN-STR-2026-' + Math.floor(100000 + Math.random() * 900000);
       this._showModal(
         '🚨 EMERGENCY DEBIT FREEZE & STATUTORY STR FILED',
@@ -734,7 +745,7 @@ window.AMLEscalation = {
           </div>
           <div style="display:flex; justify-content:space-between; margin-top:20px; border-top:1px solid #e2e8f0; padding-top:16px;">
             <button style="background:#1e293b; color:white; border:none; padding:10px 18px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="window.AMLEscalation.exportAuditLog('${custId}', '${name}', 96)">📥 Download Formal STR Dossier (.JSON)</button>
-            <button style="background:#10b981; color:white; border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="document.getElementById('aml-action-modal').remove(); window.showToast('✅ Freeze confirmation verified in audit log!', 'success');">✅ Acknowledge &amp; Close</button>
+            <button style="background:#10b981; color:white; border:none; padding:10px 24px; border-radius:8px; font-weight:700; cursor:pointer;" onclick="document.getElementById('aml-action-modal').remove(); window.showToast('✅ Freeze confirmation verified in audit log & customer repository!', 'success');">✅ Acknowledge &amp; Close</button>
           </div>
         `
       );
@@ -742,6 +753,14 @@ window.AMLEscalation = {
   },
 
   monitorAccount: function (custId, name, btnEl) {
+    try {
+      const watchlist = JSON.parse(localStorage.getItem('falconiq_watchlist_accounts') || '{}');
+      const cid = custId ? custId.toString().trim() : '';
+      watchlist[cid] = { timestamp: new Date().toISOString(), by: 'AI Compliance Agent (Watchlist)' };
+      if (!cid.startsWith('CUST_')) watchlist['CUST_' + cid] = watchlist[cid];
+      else watchlist[cid.replace('CUST_', '')] = watchlist[cid];
+      localStorage.setItem('falconiq_watchlist_accounts', JSON.stringify(watchlist));
+    } catch (err) {}
     if (btnEl) {
       btnEl.disabled = true;
       btnEl.innerHTML = '✅ ON WATCHLIST';

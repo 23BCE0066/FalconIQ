@@ -108,7 +108,7 @@ const CustomersView = {
           <td style="color:#6b7280;font-size:12.5px">${c.email || '—'}</td>
           <td style="font-size:12.5px">${c.country || '—'}</td>
           <td>${riskBadge(c.risk_category)}</td>
-          <td>${this._kycBadge(c.kyc_status)}</td>
+          <td>${this._kycBadge(c.kyc_status, c.customer_id || c.id)}</td>
           <td style="font-size:13px">${c.annual_income != null ? fmt.money(c.annual_income, c.currency || 'USD') : '—'}</td>
           <td style="text-align:center">
             ${c.alert_count > 0 ? `<span style="background:#fef2f2;color:#ef4444;border-radius:100px;padding:2px 8px;font-size:12px;font-weight:700">${c.alert_count}</span>` : `<span style="color:#9ca3af">0</span>`}
@@ -137,7 +137,20 @@ const CustomersView = {
     }
   },
 
-  _kycBadge(status) {
+  _kycBadge(status, customerId) {
+    if (customerId) {
+      try {
+        const frozen = JSON.parse(localStorage.getItem('falconiq_frozen_accounts') || '{}');
+        const cid = customerId.toString().trim();
+        if (frozen[cid] || frozen[cid.replace('CUST_', '')] || frozen['CUST_' + cid]) {
+          return `<span style="background:#fef2f2; color:#dc2626; border:1px solid #f87171; font-weight:800; padding:4px 8px; border-radius:10px; font-size:11px; display:inline-flex; align-items:center; gap:4px; box-shadow:0 1px 3px rgba(220,38,38,0.2);">🔒 FROZEN (STR FILED)</span>`;
+        }
+        const watchlist = JSON.parse(localStorage.getItem('falconiq_watchlist_accounts') || '{}');
+        if (watchlist[cid] || watchlist[cid.replace('CUST_', '')] || watchlist['CUST_' + cid]) {
+          return `<span style="background:#eff6ff; color:#2563eb; border:1px solid #93c5fd; font-weight:700; padding:4px 8px; border-radius:10px; font-size:11px; display:inline-flex; align-items:center; gap:4px;">👁️ ON WATCHLIST</span>`;
+        }
+      } catch (err) {}
+    }
     const s = (status || '').toUpperCase();
     const cls = s === 'VERIFIED' ? 'badge-approved' : s === 'FAILED' ? 'badge-high' : s === 'EXPIRED' ? 'badge-dismissed' : 'badge-pending';
     return `<span class="badge ${cls}">${s || '—'}</span>`;
@@ -166,6 +179,62 @@ const CustomersView = {
         API.get(`/customers/${customerId}/timeline`).catch(() => ({ events: [] })),
       ]);
       const c = profile.customer || profile;
+      
+      let freezeBanner = '';
+      let frozenInfo = null;
+      let watchlistInfo = null;
+      try {
+        const frozen = JSON.parse(localStorage.getItem('falconiq_frozen_accounts') || '{}');
+        const cid = (c.customer_id || customerId || '').toString().trim();
+        frozenInfo = frozen[cid] || frozen[cid.replace('CUST_', '')] || frozen['CUST_' + cid];
+        
+        const watchlist = JSON.parse(localStorage.getItem('falconiq_watchlist_accounts') || '{}');
+        watchlistInfo = watchlist[cid] || watchlist[cid.replace('CUST_', '')] || watchlist['CUST_' + cid];
+      } catch (e) {}
+
+      if (frozenInfo) {
+        freezeBanner = `
+          <div style="background:#fef2f2; border:2px solid #ef4444; color:#991b1b; border-radius:12px; padding:16px; margin-bottom:18px; box-shadow:0 4px 12px rgba(239,68,68,0.15); animation: fadeIn 0.3s ease-out;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+              <span style="font-size:26px;">🚨</span>
+              <div>
+                <strong style="display:block; color:#dc2626; font-size:14.5px; text-transform:uppercase; letter-spacing:0.5px;">STATUTORY ACCOUNT FREEZE & STR FILED</strong>
+                <span style="font-size:12.5px; color:#7f1d1d;">All debit channels and SWIFT transfer privileges instantly frozen via AI Compliance Agent.</span>
+              </div>
+            </div>
+            <div style="background:#ffffff; padding:10px 12px; border-radius:8px; border:1px solid #fecaca; font-size:12.5px; color:#475569;">
+              <strong style="color:#991b1b;">⚖️ STR Audit Evidence:</strong> "${frozenInfo.reason || 'Critical AML financial crime typology detected by autonomous agent.'}"
+            </div>
+          </div>
+        `;
+      } else if (watchlistInfo) {
+        freezeBanner = `
+          <div style="background:#eff6ff; border:2px solid #3b82f6; color:#1e3a8a; border-radius:12px; padding:14px; margin-bottom:18px; display:flex; align-items:center; gap:12px;">
+            <span style="font-size:24px;">👁️</span>
+            <div>
+              <strong style="display:block; color:#1d4ed8; font-size:14px; text-transform:uppercase;">PRIORITY REAL-TIME WATCHLIST ACTIVE</strong>
+              <span style="font-size:12.5px;">This entity is actively monitored under 24/7 transaction interception rules by the AI Agent.</span>
+            </div>
+          </div>
+        `;
+      }
+
+      let events = [...(timeline.events || [])];
+      if (frozenInfo) {
+        events.unshift({
+          event_type: 'alert',
+          description: '🔒 EMERGENCY DEBIT FREEZE & FINCEN STR FILED (Core Banking Gateway ISO-20022)',
+          timestamp: frozenInfo.timestamp || new Date().toISOString()
+        });
+      }
+      if (watchlistInfo) {
+        events.unshift({
+          event_type: 'alert',
+          description: '👁️ ENROLLED IN HIGH-RISK REAL-TIME WATCHLIST BY AI COMPLIANCE AGENT',
+          timestamp: watchlistInfo.timestamp || new Date().toISOString()
+        });
+      }
+
       document.querySelector('.modal-body').innerHTML = `
         <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
           <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#818cf8);color:white;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700">${(c.name || 'U').charAt(0).toUpperCase()}</div>
@@ -175,10 +244,11 @@ const CustomersView = {
           </div>
           <div style="margin-left:auto">${riskBadge(c.risk_category)}</div>
         </div>
+        ${freezeBanner}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
           ${[
-            ['Customer ID', `<span style="font-family:monospace;color:#6366f1">${c.customer_id}</span>`],
-            ['KYC Status', this._kycBadge(c.kyc_status)],
+            ['Customer ID', `<span style="font-family:monospace;color:#6366f1">${c.customer_id || customerId}</span>`],
+            ['KYC / Freeze Status', this._kycBadge(c.kyc_status, c.customer_id || customerId)],
             ['Annual Income', fmt.money(c.annual_income, c.currency)],
             ['Occupation', c.occupation || '—'],
             ['Total Alerts', `<strong>${risk.alert_count || 0}</strong>`],
@@ -198,14 +268,14 @@ const CustomersView = {
         <div class="divider"></div>
         <div style="font-weight:700;font-size:13.5px;margin-bottom:10px">Event Timeline</div>
         <div style="max-height:240px;overflow-y:auto;padding-right:8px">
-          ${(timeline.events || []).length === 0 ? '<div style="color:#9ca3af;font-size:13px">No events</div>' : 
-            (timeline.events || []).map(e => `
+          ${events.length === 0 ? '<div style="color:#9ca3af;font-size:13px">No events</div>' : 
+            events.map(e => `
             <div style="display:flex;gap:12px;margin-bottom:12px">
               <div style="width:24px;height:24px;border-radius:50%;background:${e.event_type === 'alert' ? '#fee2e2' : '#e0e7ff'};color:${e.event_type === 'alert' ? '#ef4444' : '#4f46e5'};display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">
                 ${e.event_type === 'alert' ? '⚠' : '💳'}
               </div>
               <div>
-                <div style="font-size:13px;font-weight:600">${e.description}</div>
+                <div style="font-size:13px;font-weight:600;${e.description.includes('FROZEN') ? 'color:#dc2626;' : ''}">${e.description}</div>
                 <div style="font-size:11.5px;color:#9ca3af">${fmt.datetime(e.timestamp)} · ${e.event_type.toUpperCase()}</div>
               </div>
             </div>
