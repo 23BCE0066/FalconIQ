@@ -28,6 +28,20 @@ Financial institutions worldwide are strictly mandated by regulatory bodies (**F
 
 ---
 
+## ✨ Comprehensive Platform Features & Core Capabilities
+
+**FalconIQ** goes beyond standard conversational prototypes to deliver an enterprise-grade financial surveillance architecture equipped with real-world onboarding, compliance execution, and collaborative management tools:
+
+* **🤖 Autonomous AI AML Copilot:** Real-time natural language query decomposition, short-circuit tool orchestration, quantitative ledger arithmetic, and legally defensible explainable AI (XAI) narratives.
+* **🚨 Emergency Statutory Debit Freezing & STR E-Dossiers:** Single-click regulatory execution that locks target accounts, synchronizes **`🔒 FROZEN`** badges across multi-tab UI repositories in real-time, and compiles downloadable, cryptographically verified **FinCEN Suspicious Activity Report (.JSON)** evidentiary dossiers.
+* **📅 Interactive "Book a Demo" & Presentation Scheduling:** Seamless live scheduling interface enabling banking institutions, evaluation judges, and regulatory authorities to reserve live simulations of our AI agent and surveillance pipelines.
+* **📧 Live Email Contact & Institutional Consulting Portal:** Dedicated real-time communication funnel allowing compliance leads to interface directly with our engineering team for enterprise architecture consulting and deployment integration.
+* **💰 Tiered Enterprise Pricing Modules:** Flexible, scalable licensing packages tailored for diverse financial ecosystems—from high-growth Fintech Startups to sovereign Tier-1 Banking Consortiums.
+* **🔐 Institutional Sign-Up & Role-Based Access Control (RBAC):** Secure multi-tenant onboarding workflows backed by cryptographic authentication and structured investigatory role segregation (*Compliance Officer, Level-2 EDD Auditor, System Administrator*).
+* **🌐 Real-Time Database Synchrony & Multi-Table SQL Repository:** Persistent synchronization with cloud PostgreSQL ledgers (Supabase) covering 2,100 customer entities, transaction history feeds, and automated audit logging.
+
+---
+
 ## 🖥️ Live Platform Showcase & System Screenshots
 
 To verify the operational readiness and production quality of **FalconIQ**, below is a visual showcase of our deployed enterprise application modules, AI agent workflows, and analytical dashboards.
@@ -56,25 +70,31 @@ Our autonomous AI investigation interface. Notice the **Live Execution Timeline*
 
 ---
 
-### 5. 🚨 Alerts & Cases Escalation Management
+### 5. 🚨 Emergency Statutory Debit Freeze & STR Enforcement
+Demonstrates the high-impact regulatory intervention workflow when an investigator activates **Report & Freeze Account**. The platform immediately locks account transactions, triggers the red Statutory Enforcement Modal, synchronizes a **`🔒 FROZEN`** badge across all live table repositories, and generates an official downloadable **FinCEN STR Audit Dossier (.JSON)**.
+![Emergency Report and Freeze Enforcement](screenshots/REPORT_AND_FREEZE.png)
+
+---
+
+### 6. ⚠️ Alerts & Cases Escalation Management
 An enterprise triage workspace where compliance officers filter incoming anomalies by severity (**HIGH**, **MEDIUM**, **CRITICAL**), review triggered FATF typology rules (such as *Structuring / Smurfing* and *Rapid Cash-Out*), and approve or reject statutory case workflows.
 ![Alerts and Cases Cockpit](screenshots/ALERT.png)
 
 ---
 
-### 6. 👥 Customer Master Repository & Risk Profiles
+### 7. 👥 Customer Master Repository & Risk Profiles
 A deep entity exploration workspace providing searching, KYC status filtering, jurisdictional risk badges, declared annual income monitoring, and real-time visualization of frozen or reported accounts.
 ![Customer Master Repository](screenshots/CUSTOMERS.png)
 
 ---
 
-### 7. 🗄️ Datasets Hub & Real-Time Schema Inspection
+### 8. 🗄️ Datasets Hub & Real-Time Schema Inspection
 Demonstrates active connectivity to our multi-table database repository, allowing instant inspection of customer master data, transaction history ledgers, alert records, and global geographical distribution.
 ![Datasets Management View](screenshots/DATASET.png)
 
 ---
 
-### 8. 🕸️ Deep Graph Network Analysis & Typology Topology
+### 9. 🕸️ Deep Graph Network Analysis & Typology Topology
 Advanced graph visualization mapping multi-hop financial flows, isolating circular money laundering loops, structural deposit dispersion across ATMs, and cross-border layering funnels.
 ![Network Graph Analysis](screenshots/NETWORK_ANALYSIS.png)
 
