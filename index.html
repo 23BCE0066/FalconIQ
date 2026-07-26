@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FalconIQ — Enterprise AI AML & Fraud Intelligence Platform</title>
+  <meta http-equiv="refresh" content="0; url=./frontend/index.html">
+  <script>
+    // Instantaneous redirect to primary application interface
+    window.location.replace("./frontend/index.html");
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0f0e2a;
+      color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #3b82f6;
+      border-bottom-color: transparent;
+      border-radius: 50%;
+      display: inline-block;
+      box-sizing: border-box;
+      animation: rotation 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes rotation {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    h2 { margin: 0 0 8px 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+    p { margin: 0; color: #94a3b8; font-size: 14px; }
+    a { color: #3b82f6; text-decoration: none; font-weight: 600; }
+  </script>
+</head>
+<body>
+  <div class="loader"></div>
+  <h2>Initializing FalconIQ Analytical Platform...</h2>
+  <p>If your browser does not automatically redirect, <a href="./frontend/index.html">click here to open the dashboard</a>.</p>
+</body>
+</html>
